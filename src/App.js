@@ -3,10 +3,29 @@ import React, { useState } from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
 
-function App() {
+function App(props) {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
   const [homeScore, setHomeScore] = useState(0);
   const [awayScore, setAwayScore] = useState(0);
+
+  const score = (team, type) => (e) => { // Some trickery! :D
+    console.log(e); // What exactly is this 'event object'?
+    if (team === "home") {
+      if (type === "touchdown") {
+        return setHomeScore(homeScore + 7);
+      } else if (type === "fieldGoal") {
+        return setHomeScore(homeScore + 3);
+      }
+    } else if (team === "away") {
+      if (type === "touchdown") {
+        return setAwayScore(awayScore + 7);
+      } else if (type === "fieldGoal") {
+        return setAwayScore(awayScore + 3);
+      }
+    } else {
+      return console.log("Invalid TEAM");
+    }
+  }
 
   return (
     <div className="container">
@@ -30,12 +49,12 @@ function App() {
       <section className="buttons">
         <div className="homeButtons">
           {/* TODO STEP 4 - Now we need to attach our state setter functions to click listeners. */}
-          <button className="homeButtons__touchdown">Home Touchdown</button>
-          <button className="homeButtons__fieldGoal">Home Field Goal</button>
+          <button className="homeButtons__touchdown" onClick={score("home", "touchdown")}>Home Touchdown</button>
+          <button className="homeButtons__fieldGoal" onClick={score("home", "fieldGoal")}>Home Field Goal</button>
         </div>
         <div className="awayButtons">
-          <button className="awayButtons__touchdown">Away Touchdown</button>
-          <button className="awayButtons__fieldGoal">Away Field Goal</button>
+          <button className="awayButtons__touchdown" onClick={score("away", "touchdown")}>Away Touchdown</button>
+          <button className="awayButtons__fieldGoal" onClick={score("away", "fieldGoal")}>Away Field Goal</button>
         </div>
       </section>
     </div>
